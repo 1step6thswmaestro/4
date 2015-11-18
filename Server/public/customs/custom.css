@@ -1,0 +1,12 @@
+
+.led {
+	height: 150px;
+}
+
+.led-title {
+	background: url(lights.png) no-repeat center top;
+	color: #FFFFFF;
+	font-size: 40px;
+	font-weight: 900;
+	text-align: center;
+}

@@ -1,0 +1,77 @@
+@font-face {
+	font-family: 'icomoon';
+	src:url('fonts/icomoon.eot?4552tk');
+	src:url('fonts/icomoon.eot?4552tk#iefix') format('embedded-opentype'),
+		url('fonts/icomoon.ttf?4552tk') format('truetype'),
+		url('fonts/icomoon.woff?4552tk') format('woff'),
+		url('fonts/icomoon.svg?4552tk#icomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	font-family: 'icomoon';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-radio:before {
+	content: "\e903";
+}
+.icon-bulb:before {
+	content: "\e900";
+}
+.icon-thermometer:before {
+	content: "\e902";
+}
+.icon-pause:before {
+	content: "\e018";
+}
+.icon-play_arrow:before {
+	content: "\e01b";
+}
+.icon-skip_next:before {
+	content: "\e027";
+}
+.icon-skip_previous:before {
+	content: "\e028";
+}
+.icon-volume_down:before {
+	content: "\e030";
+}
+.icon-volume_up:before {
+	content: "\e033";
+}
+.icon-expand_less:before {
+	content: "\e20a";
+}
+.icon-expand_more:before {
+	content: "\e20b";
+}
+.icon-droplet:before {
+	content: "\e901";
+}
+.icon-remove-user:before {
+	content: "\e905";
+}
+.icon-drop:before {
+	content: "\e904";
+}
+.icon-user:before {
+	content: "\e906";
+}
+.icon-water:before {
+	content: "\e907";
+}
+.icon-droplet2:before {
+	content: "\e908";
+}
+

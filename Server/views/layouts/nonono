@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+    	<meta charset="utf-8">
+    	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+   		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    	<link type="text/css" rel="stylesheet" href="mainstructure.css">
+    	<link type="text/css" rel="stylesheet" href="ihover.css">
+    	<link type="text/css" rel="stylesheet" href="ihover.min.css">
+    	<link type="text/css" rel="stylesheet" href="bootstrap/dist/css/bootstrap-theme.css">
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css">
+
+		<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		<script src="/socket.io/socket.io.js"></script> 
+		
+		<title>SMART SWEET HOME </title>
+	</head>
+	<body>
+		<div class="navbar navbar-default navbar-fixed-top" role="navigtaion">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="sr-only">토글 네비게이션</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">SMART HOME</a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav navbar-right">
+						<li class="active"><a href="#">My Page</a></li>
+						<li><a href="#">LOG OUT</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="starter-template">
+						<table>
+							{{#each items}}
+							<tr>
+								<td><h3>{{name}}</h3></td>
+							</tr>
+							<tr>
+								<td>
+				          			<div class="statusCircle">
+				          				<p id="status:OFF:{{name}}">{{status}}</p>
+				          				<p id="status:ON:{{name}}" class="blink"></p>
+				          			</div>
+								</td>
+								<td>
+									<form method="post">
+										<input type="hidden" name="command" value="{{name}}:ON">
+				       					<input id="button" type="submit" value="On"/>
+									</form>
+								</td>
+								<td>
+				      				<form method="post">
+										<input type="hidden" name="command" value="{{name}}:OFF">
+				          				<input id="button" type="submit" value="Off"/>
+				          			</form>
+								</td>
+							</tr>
+							{{/each}}
+				        </table>
+				
+			</div>
+		</div>	
+
+		<script type="text/javascript">
+	       $(document).ready(function() {
+	       		var socket = io.connect('http://localhost:8888');
+	        	socket.on('statusUpdate', function(data) {
+	        		var datastring = JSON.stringify(data);
+	        		for (var i in data) {
+	        				var statusOff = document.getElementById("status:OFF:" + data[i].name);
+	        				var statusOn = document.getElementById("status:ON:" + data[i].name);
+	        			if (data[i].status == "ON") {
+	        				statusOff.innerHTML = "";
+	        				statusOn.innerHTML = data[i].status;
+	        			}
+	        			else if (data[i].status == "OFF") {
+	        				statusOff.innerHTML = data[i].status;
+	        				statusOn.innerHTML = "";        				
+	        			}
+	        		}
+	          		socket.emit('front', { reply: 'recieved'});
+	        	});
+	       });
+		</script>
+	</body>
+</html>

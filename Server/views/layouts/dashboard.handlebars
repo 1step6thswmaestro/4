@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    	<meta name="description" content="">
+    	<meta name="author" content="Dashboard">
+
+    	<title>우리집이 살아있다!</title>
+
+    	    <!-- Bootstrap core CSS -->
+    	<link href="assets/css/bootstrap.css" rel="stylesheet">
+	    <!--external css-->
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	    <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
+	    <link rel="stylesheet" type="text/css" href="assets/js/gritter/css/jquery.gritter.css" />
+	    <link rel="stylesheet" type="text/css" href="assets/lineicons/style.css" />    
+	    <link rel="stylesheet" type="text/css" href="assets/icomoon/style.css" /> 
+	    <link rel="stylecheet" type="text/css" href="custom/custom.css"/>
+	    
+	    <!-- Custom styles for this template -->
+	    <link href="assets/css/style.css" rel="stylesheet">
+	    <link href="assets/css/style-responsive.css" rel="stylesheet">
+
+	    <script src="assets/js/chart-master/Chart.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+	</head>
+	<body>
+		<section id="container">
+			<!--header-->
+			<header class="header black-bg">
+				<div class="sidebar-toggle-box">
+					<div class="fa fa-bars tooltips" data-placement="right"></div>
+				</div>
+				<a href="/dashboard" class="logo"><b>우리집이 살아있다!</b></a>
+				
+			</header>
+			<!--sidebar-->
+			<aside>
+				<div id="sidebar" class="nav-collapse">
+					<ul class="sidebar-menu" id="nav-accordion">
+						<p class="centered"><a href="#"><img src="assets/img/iu.jpeg" class="img-circle" width="60"></a></p>
+              	  		<h5 class="centered">아이유</h5>
+
+              	  		<li class="mt">
+                      		<a class="active" href="#">
+                          		<i class="fa fa-dashboard"></i>
+                          		<span>대시보드</span>
+                      		</a>
+                  		</li>
+
+                  		<li class="sub-menu">
+                      		<a href="/statistics" >
+                          		<i class="fa fa-area-chart"></i>
+                          		<span>통계</span>
+                      		</a>
+                  		</li>
+					</ul>
+				</div>
+			</aside>
+
+			<section id="main-content">
+				<section class="wrapper">
+					<div class="row">
+						<div class="col-lg-9 main-chart">
+							<div class="border-head">
+								<h3 style="margin-top:20px;">SMART CONTROLLER</h3>
+							</div>
+							<div class="row mtbox">
+								<div class="col-md-10 col-sm-10 col-md-offset-1 col-sm-offset-1">
+									<div class="row" style="margin-bottom:30px;">
+										<div class="col-md-3 col-sm-3 col-xs-6 led">
+											<div id="status:LED1" value="on" onclick="controlLED('LED1')" class="led-button">
+												<span class="li_bulb"></span>
+												<h4>조명 하나</h4>
+											</div>
+			                  			</div>
+										<div class="col-md-3 col-sm-3 col-xs-6 led">
+											<div id="status:LED2" value="on" onclick="controlLED('LED2')" class="led-button">
+												<span class="li_bulb"></span>
+												<h4>조명 둘</h4>
+											</div>
+			                  			</div>
+										<div class="col-md-3 col-sm-3 col-xs-6 led">
+											<div id="status:LED3" value="on" onclick="controlLED('LED3')" class="led-button">
+												<span class="li_bulb"></span>
+												<h4>조명 셋</h4>
+											</div>
+			                  			</div>
+										<div class="col-md-3 col-sm-3 col-xs-6 led">
+											<div id="status:LED4" value="on" onclick="controlLED('LED4')"  class="led-button">
+												<span class="li_bulb"></span>
+												<h4>조명 넷</h4>
+											</div>
+			                  			</div>	
+									</div>
+									
+								</div>				
+								<div class="btn-group btn-group-justified">
+									<div class="btn-group">
+										<button type="button" class="btn btn-default" onclick="controlALLLED('ON')">조명 전부 켜기</button>
+									</div>
+									<div class="btn-group">
+										<button type="button" class="btn btn-default" onclick="controlALLLED('OFF')">조명 전부 끄기</button>
+									</div>
+								</div>
+			
+							</div>
+
+										
+							<div class="row">
+								<div class="col-lg-4 col-md-4 col-sm-4">
+									<div id="status:HUMI" class="control-panel">
+										<img id="img:HUMI" src="assets/img/humi-off.png" />
+										<div class="buttonbox">
+											<div class="btn-group" style="margin:auto;">
+												<button id="button:HUMI:LOW" type="button" class="btn btn-default btn-xs btc" onclick="controlPublish('HUMI:LOW')">LOW</button>
+												<button id="button:HUMI:MIDDLE" type="button" class="btn btn-default btn-xs btc" onclick="controlPublish('HUMI:MIDDLE')">MID</button>
+												<button id="button:HUMI:HIGH" type="button" class="btn btn-default btn-xs btc" onclick="controlPublish('HUMI:HIGH')">HIGH</button>
+											</div>
+										</div>
+
+										<div class="buttonbox">
+											<button type="button" class="btn btn-round btn-default btc" onclick="controlPublish('HUMI:PUSH')">PUSH</button>
+											<button id="button:HUMI:OFF" type="button" class="btn btn-round btn-default btc" onclick="controlPublish('HUMI:OFF')">OFF</button>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-4 col-md-4 col-sm-4">
+									<div id="status:FAN" class="control-panel">
+										<img id="img:FAN" src="assets/img/fani-off.png" />
+										<div class="buttonbox">
+											<div class="btn-group" style="margin:auto;">
+												<button id="button:FAN:ULOW" type="button" class="btn btn-default btn-xs btc" onclick="controlPublish('FAN:ULOW')">초미풍</button>
+												<button id="button:FAN:LOW" type="button" class="btn btn-default btn-xs btc" onclick="controlPublish('FAN:LOW')">미풍</button>
+												<button id="button:FAN:MIDDLE" type="button" class="btn btn-default btn-xs btc" onclick="controlPublish('FAN:MIDDLE')">약풍</button>
+												<button id="button:FAN:HIGH" type="button" class="btn btn-default btn-xs btc" onclick="controlPublish('FAN:HIGH')">강풍</button>
+											</div>
+										</div>
+										<div class="buttonbox">
+												<button id="button:FAN:SWING" type="button" class="btn btn-round btn-default btc" onclick="controlPublish('FAN:SWING')">회전</button>
+												<button id="button:FAN:OFF" type="button" class="btn btn-round btn-default btc" onclick="controlPublish('FAN:OFF')">OFF</button>
+											</div>
+									</div>
+								</div>
+								<div class="col-lg-4 col-md-4 col-sm-4">
+									<div id="status:PROJECTOR" class="control-panel-half" style="background:#FFFFFF; color:#989898">
+										<div class="row">
+											<img id="img:PROJECTOR" src="assets/img/projector-off.png" />
+										</div>
+										<button id="button:proj:ON" class="btn btn-default btc" onclick="controlPublish('PROJECTOR:ONOFF')">ON/OFF</button>
+										
+									</div>
+									<div class="control-panel-half" style="background:#4DBE99; color:#FFFFFF; padding-top:20px;" onclick="controlALLOFF()">
+										<span class="lnr lnr-power-switch" style="font-size:50px;"></span>
+										<h4>전부 끄기</h4>
+									</div>
+								</div>
+							</div>
+							<div class="showback" style="margin-bottom:20px;">
+								<div class="row">
+									<div class="col-md-2 col-sm-2" style="text-align:center;">
+										<span class="icon-radio"></span>
+									</div>
+									<div class="col-md-2 col-sm-2" style="text-align:center; margin-top:9px;">
+										<button class="btn btn-default btc" onclick="controlPublish('RADIO:MODE')">MODE</button>
+									</div>
+									<div class="col-md-4 col-sm-4" style="text-align:center; margin-top:9px;"> 
+										<div class="col-md-3 col-sm-3 col-xs-3 o">
+											<span class="icon-skip_previous" style="font-size:35px;" onclick="controlPublish('RADIO:PREV')"></span>
+										</div>
+										<div class="col-md-3 col-sm-3 col-xs-3 o">
+											<span class="icon-play_arrow" style="font-size:35px;" onclick="controlPublish('RADIO:PLAYPAUSE')"></span>
+										</div>
+										<div class="col-md-3 col-sm-3 col-xs-3 o">
+                                            <span class="icon-pause" style="font-size:35px;" onclick="controlPublish('RADIO:PLAYPAUSE')"></span>
+                                        </div>
+										<div class="col-md-3 col-sm-3 col-xs-3 o">
+											<span class="icon-skip_next" style="font-size:35px;" onclick="controlPublish('RADIO:NEXT')"></span>
+										</div>		
+									</div>		
+									<div class="col-md-4 col-sm-4" style="text-align:center; margin-top:9px;"> 								
+										<div class="col-md-3 col-sm-3 col-xs-3 o">
+											<span class="icon-volume_up" style="font-size:35px;" onclick="controlPublish('RADIO:VOLUMEUP')"></span>
+										</div>
+										<div class="col-md-3 col-sm-3 col-xs-3 o">
+											<span class="icon-volume_down" style="font-size:35px;" onclick="controlPublish('RADIO:VOLUMEDOWN')"></span>
+										</div>
+										<div class="col-md-3 col-sm-3 col-xs-3 o">
+											<span class="icon-expand_less" style="font-size:35px;" onclick="controlPublish('RADIO:CHANNELUP')"></span>
+										</div>
+										<div class="col-md-3 col-sm-3 col-xs-3 o">         
+											<span class="icon-expand_more" style="font-size:35px;" onclick="controlPublish('RADIO:CHANNELDOWN')"></span>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="border-head">
+								<h3>MEMBERS</h3>
+							</div>
+							<div class="row">
+								<table class="table-Family">
+									<tr>
+										<td>
+											<p class="centered">
+												<img src="assets/img/uri001.png" class="img-circle" width="60">
+											</p>
+										</td>
+										<td>
+											<p class="centered">
+												<img src="assets/img/uri002.png" class="img-circle" width="60">
+											</p>
+										</td>
+										<td>
+											<p class="centered">
+												<img src="assets/img/uri003.png" class="img-circle" width="60">
+											</p>
+										</td>
+										<td>
+											<p class="centered">
+												<img src="assets/img/uri004.png" class="img-circle" width="60">
+											</p>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<p class="centered"> 
+												<strong>최재헌<br></strong><small>SW Maestro 6th</small>
+											</p>
+										</td>
+										<td>
+											<p class="centered"> 
+												<strong>오정규<br></strong><small>SW Maestro 6th</small>
+											</p>
+										</td>
+										<td>
+											<p class="centered"> 
+												<strong>서준교<br></strong><small>SW Maestro 6th</small>
+											</p>
+										</td>
+										<td>
+											<p class="centered"> 
+												<strong>이재연<br></strong><small>SW Maestro 6th</small>
+											</p>
+										</td>
+									</tr>
+								</table>
+							</div>							
+						</div>
+
+
+
+						<div class="col-lg-3 ds">
+							<div class="border-head">
+								<h3>CCTV</h3>
+							</div>
+							<img id="cctv" style="max-width:100%; margin-left:auto; margin-right:auto; margin-bottom:30px;" src="http://swhomegateway.dyndns.org:9999/?action=stream"/>
+							
+							<div class="border-head">
+								<h3>STATUS</h3>
+							</div>
+							<div class="weather pn mar">
+								<span class="icon-thermometer"></span>
+								<h2 id="status:TEMP"></h2>
+								<h4>적당적당</h4>
+							</div>
+							<div class="humi pn mar">
+								<span class="icon-drop"></span>
+								<h2 id="status:HUM"></h2>
+								<h4>살짝 건조해요</h4>
+							</div>
+							<div class="darkblue-panel pn mar" style="padding:50px;">
+									<p style="text-align:center; color: #68dff0;">
+										<span id="status:MOTION:span" class="icon-remove-user" style="font-size:60px;"></span>
+									</p>
+								<h3 id="status:MOTION" style="color:#FFFFFF; margin-top:20px; font-size:20px;"></h3>
+							</div>
+						</div>
+				</section>
+			</section>
+			<footer class="site-footer">
+	          <div class="text-center">
+	              2015 - SW Maestro <a onclick="controlALLON()">6</a>th. J5.
+	              <a href="/dashboard" class="go-top">
+	             	     <i class="fa fa-angle-up"></i>
+	             	 </a>
+	          	</div>
+	      	</footer>
+		</section>
+
+		<script src="assets/js/jquery.js"></script>
+	    <script src="assets/js/jquery-1.8.3.min.js"></script>
+	    <script src="assets/js/bootstrap.min.js"></script>
+	    <script class="include" type="text/javascript" src="assets/js/jquery.dcjqaccordion.2.7.js"></script>
+	    <script src="assets/js/jquery.scrollTo.min.js"></script>
+	    <script src="assets/js/jquery.nicescroll.js" type="text/javascript"></script>
+	    <script src="assets/js/jquery.sparkline.js"></script>
+
+	    <!--common script for all pages-->
+	    <script src="assets/js/common-scripts.js"></script>
+	    
+	    <script type="text/javascript" src="assets/js/gritter/js/jquery.gritter.js"></script>
+	    <script type="text/javascript" src="assets/js/gritter-conf.js"></script>
+
+		<!--custom switch-->
+		<script src="assets/js/bootstrap-switch.js"></script>
+
+	    <!--script for this page-->
+	    <script src="assets/js/sparkline-chart.js"></script>    
+		<script src="assets/js/zabuto_calendar.js"></script>	
+
+        <script type="text/javascript">
+            // display current status
+            $(document).ready(function() {
+
+	            var socket = io.connect('http://ohmyhome.ezupup.cafe24.com:8888');
+				var imgHeight = document.getElementById('cctv').height;
+				if (imgHeight == null || imgHeight == 0) {
+					document.getElementById('cctv').src = 'http://172.16.100.62:9999/?action=stream';
+				}
+								
+	            socket.on('deviceUpdate', function(data) {
+	                for (var i in data) {
+ 						if (data[i].name.substring(0, 3) == 'LED') {
+	                    	var deviceStatus = document.getElementById('status:' + data[i].name);
+	                        if (data[i].status == 'ON') {
+	                         	deviceStatus.style.color = '#FFFFFF';
+	                           	deviceStatus.value = 'OFF';
+	                            if (data[i].name == 'LED1') {
+	                           		deviceStatus.style.background = '#ffd777';
+	                           	}
+	                           	else if (data[i].name == 'LED2') {
+	                           		deviceStatus.style.background = '#68dff0';	
+	                           	}
+	                           	else if (data[i].name == 'LED3') {
+	                           		deviceStatus.style.background = '#FFA4C4';
+	                           	}
+	                           	else if (data[i].name == 'LED4') {
+	                           		deviceStatus.style.background = '#FFB266';
+	                           	}
+	                        }
+	                        else if (data[i].status == 'OFF') {
+	                          	deviceStatus.style.background = '#FFFFFF';
+	                          	deviceStatus.style.color = '#989898';
+	                          	deviceStatus.value = 'ON';
+	                        } 
+	                    }
+
+	                    else if (data[i].name == 'HUMI') {
+	                    	var humiStatus = document.getElementById('status:HUMI');
+	                    	var humiImg = document.getElementById('img:HUMI');
+	                        if (data[i].status == 'LOW') {
+	                       		humiStatus.style.background = '#ABE990';
+	                       		humiImg.src = 'assets/img/humi.png'
+	                       		document.getElementById('button:HUMI:LOW').style.color = '#ABE990';
+	                       		document.getElementById('button:HUMI:MIDDLE').style.color = '#989898';
+	                       		document.getElementById('button:HUMI:HIGH').style.color = '#989898';
+	                       		document.getElementById('button:HUMI:OFF').style.color = '#989898';
+	                       		document.getElementById('button:HUMI:OFF').style.background = '#FFFFFF';
+	                       	}
+	                       	if (data[i].status == 'MIDDLE') {
+	                       		humiStatus.style.background = '#FFB266';
+	                       		humiImg.src = 'assets/img/humi.png'
+	                       		document.getElementById('button:HUMI:MIDDLE').style.color = '#FFB266';
+	                       		document.getElementById('button:HUMI:LOW').style.color = '#989898';
+	                       		document.getElementById('button:HUMI:HIGH').style.color = '#989898';
+	                       		document.getElementById('button:HUMI:OFF').style.color = '#989898';
+	                       		document.getElementById('button:HUMI:OFF').style.background = '#FFFFFF';
+	                       	}
+	                       	if (data[i].status == 'HIGH') {
+	                       		humiStatus.style.background = '#EA7575';
+	                       		humiImg.src = 'assets/img/humi.png'
+	                       		document.getElementById('button:HUMI:HIGH').style.color = '#EA7575';
+	                       		document.getElementById('button:HUMI:MIDDLE').style.color = '#989898';
+	                       		document.getElementById('button:HUMI:LOW').style.color = '#989898';
+	                       		document.getElementById('button:HUMI:OFF').style.color = '#989898';
+	                       		document.getElementById('button:HUMI:OFF').style.background = '#FFFFFF';
+	                       	}
+	                       	if (data[i].status == 'OFF') {
+	                       		humiStatus.style.background = '#FFFFFF';
+	                       		humiImg.src = 'assets/img/humi-off.png'
+	                       		document.getElementById('button:HUMI:OFF').style.color = '#FFFFFF';
+	                       		document.getElementById('button:HUMI:OFF').style.background = '#989898';
+	                       		document.getElementById('button:HUMI:MIDDLE').style.color = '#989898';
+	                       		document.getElementById('button:HUMI:HIGH').style.color = '#989898';
+	                       		document.getElementById('button:HUMI:LOW').style.color = '#989898';
+	                       	}
+	                    }
+
+	                    else if (data[i].name == 'FAN') {
+	                    	var fanStatus = document.getElementById('status:FAN');
+	                    	var fanImg = document.getElementById('img:FAN');
+	                    	
+	                    	if (data[i].status.substring(data[i].status.length - 2, data[i].status.length) == 'SW') {
+	                    		data[i].status = data[i].status.substring(0, data[i].status.length - 3);
+	                    		document.getElementById('button:FAN:SWING').style.background = '#48cfad';
+	                    		document.getElementById('button:FAN:SWING').style.color = '#FFFFFF';
+	                    	}
+	                    	else {
+	                    		document.getElementById('button:FAN:SWING').style.background = '#FFFFFF';
+	                    		document.getElementById('button:FAN:SWING').style.color = '#989898';
+	                    	}
+
+	                    	if (data[i].status == 'ULOW') {
+	                    		fanStatus.style.background = '#88E7EB';
+	                    		fanImg.src = 'assets/img/fani.png';
+	                    		document.getElementById('button:FAN:ULOW').style.color = '#88E7EB';
+	                    		document.getElementById('button:FAN:OFF').style.color = '#989898';
+	                    		document.getElementById('button:FAN:LOW').style.color = '#989898';
+	                    		document.getElementById('button:FAN:MIDDLE').style.color = '#989898';
+	                    		document.getElementById('button:FAN:HIGH').style.color = '#989898';
+	                    		document.getElementById('button:FAN:OFF').style.background = '#FFFFFF';
+	                    	}
+	                    	else if (data[i].status == 'LOW') {
+	                    		fanStatus.style.background = '#ABE990';
+	                    		fanImg.src = 'assets/img/fani.png';
+	                    		document.getElementById('button:FAN:LOW').style.color = '#ABE990';
+	                    		document.getElementById('button:FAN:OFF').style.color = '#989898';
+	                    		document.getElementById('button:FAN:ULOW').style.color = '#989898';
+	                    		document.getElementById('button:FAN:MIDDLE').style.color = '#989898';
+	                    		document.getElementById('button:FAN:HIGH').style.color = '#989898';
+	                    		document.getElementById('button:FAN:OFF').style.background = '#FFFFFF';
+	                    	}
+	                    	else if (data[i].status == 'MIDDLE') {
+	                    		fanStatus.style.background = '#FFB266';
+	                    		fanImg.src = 'assets/img/fani.png';
+	                    		document.getElementById('button:FAN:MIDDLE').style.color = '#FFB266';
+	                    		document.getElementById('button:FAN:OFF').style.color = '#989898';
+	                    		document.getElementById('button:FAN:LOW').style.color = '#989898';
+	                    		document.getElementById('button:FAN:ULOW').style.color = '#989898';
+	                    		document.getElementById('button:FAN:HIGH').style.color = '#989898';
+	                    		document.getElementById('button:FAN:OFF').style.background = '#FFFFFF';
+	                    	}
+	                    	else if (data[i].status == 'HIGH') {
+	                    		fanStatus.style.background = '#EA7575';
+	                    		fanImg.src = 'assets/img/fani.png';
+	                    		document.getElementById('button:FAN:HIGH').style.color = '#EA7575';
+	                    		document.getElementById('button:FAN:OFF').style.color = '#989898';
+	                    		document.getElementById('button:FAN:LOW').style.color = '#989898';
+	                    		document.getElementById('button:FAN:MIDDLE').style.color = '#989898';
+	                    		document.getElementById('button:FAN:ULOW').style.color = '#989898';
+	                    		document.getElementById('button:FAN:OFF').style.background = '#FFFFFF';
+	                    	}
+	                    	else if (data[i].status == 'OFF') {
+	                    		fanStatus.style.background = '#FFFFFF';
+	                    		fanImg.src = 'assets/img/fani-off.png';
+	                    		document.getElementById('button:FAN:OFF').style.color = '#FFFFFF';
+	                    		document.getElementById('button:FAN:ULOW').style.color = '#989898';
+	                    		document.getElementById('button:FAN:LOW').style.color = '#989898';
+	                    		document.getElementById('button:FAN:MIDDLE').style.color = '#989898';
+	                    		document.getElementById('button:FAN:HIGH').style.color = '#989898';
+	                    		document.getElementById('button:FAN:OFF').style.background = '#989898';
+	                    	}
+	                    }
+
+	                    else if (data[i].name == 'RADIO') {
+	                    	if (data[i].status == 'PLAY') {
+	                    		document.getElementById('button:RADIO').className = 'icon-pause';
+	                    	}
+	                    	else if (data[i].status == 'PAUSE') {
+	                    		document.getElementById('button:RADJO').className = 'icon-play_arrow';
+	                    	}
+	                    }
+					}
+	                socket.emit('front-display', { reply: data });
+	            });
+				socket.on('statusUpdate', function(data) {
+					for (var i in data) {
+						var envStatus = document.getElementById("status:" + data[i].type);
+						if (envStatus != null) {
+							if (data[i].type == "TEMP") {
+								envStatus.innerHTML = data[i].value + '°C';
+							}
+							else if (data[i].type == "HUM") {
+								envStatus.innerHTML = data[i].value + '%';
+							}
+							else if (data[i].type == "MOTION") {
+								if (data[i].value == "ON") {
+									document.getElementById("status:MOTION:span").className = 'icon-user';
+									envStatus.innerHTML = "누가 집에 있네요";
+								}
+								else {
+									document.getElementById("status:MOTION:span").className = 'icon-remove-user';
+									envStatus.innerHTML = "아무도 없어요"
+								}
+							}
+						}
+					}
+					socket.emit('front-display', { reply: data });
+				});
+	       	});
+        </script>	      	
+        <script type="text/javascript">
+			var socket = io.connect('http://ohmyhome.ezupup.cafe24.com:8888');
+			function controlPublish (deviceCommand) {
+				var arr = deviceCommand.split(':');
+				var deviceName = arr[0];
+				var command = arr[1];
+				
+				socket.emit('front-controlPublish', { CONTROLLER: 'WEB', TARGET: deviceName, COMMAND: command });
+			}
+			function controlLED (deviceName) {
+				var device = document.getElementById('status:' + deviceName);
+				socket.emit('front-controlPublish', { CONTROLLER: 'WEB',  TARGET: deviceName,  COMMAND: device.value });
+			}
+			function controlALLLED (command) {
+				socket.emit('front-LEDALL', command);
+			}
+			function controlALLOFF () {
+				socket.emit('front-ALLOFF', { CONTROLLER: 'WEB' });
+			}
+			function controlALLON () {
+				socket.emit('front-ALLON', { CONTROLLER: 'WEB '} );
+			}
+ 
+        </script>
+	</body>
+</html>

@@ -1,0 +1,71 @@
+#wrapper {
+	width: 100%;
+	height: 100%;
+}
+
+#header {
+	float: top;
+	position: absolute;
+	width: 100%;
+	height: 100px;
+	background-color: #00C957;
+}
+
+#nav {
+	float: left;
+	position: relative;
+	width: 20%;
+	height: 1500px;
+	background-color: #53CEEE;
+}
+
+#mainpage {
+	float: right;
+	position: relative;
+	width: 80%;
+	height: 1500px;
+	background-color: #EEEEEE;
+}
+
+.statusCircle {
+	display: table;
+	width: 100px;
+	height: 100px;
+	background-color: #FFFFFF;
+	border: 2px solid;
+	border-color: #53CEEE;
+	border-radius: 50%;
+	font-size: 1em;
+	text-align: center;
+	vertical-align: center;
+}
+
+input#button {
+	height: 70px;
+	text-align: center;
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size: 1.3em;
+	background-color: #F1DD7E;
+	border-color: #FFFFFF;
+	border-radius: 25%
+}
+
+p {
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.blink {
+    animation-duration: 1s;
+    animation-name: blink;
+    animation-iteration-count: infinite;
+    animation-timing-function: steps(2, start);
+}
+
+@keyframes blink {
+    80% {
+        visibility: hidden;
+    }
+}

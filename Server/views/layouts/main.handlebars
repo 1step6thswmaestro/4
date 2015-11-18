@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+        <head>
+        	<link type="text/css" rel="stylesheet" href="mainstructure.css">
+                <script src="/socket.io/socket.io.js"></script>
+                <script src="http://code.jquery.com/jquery-1.7.1.js"></script>
+                <title> SWEET HOME </title>
+        </head>
+        <body style="margin:0; width:100%; height:100%">
+        <div id="wrapper">
+                <div id="nav">
+                        <h1 style="height=100%; margin-top:10px; margin-left:2px; color:#FFFFFF"> {{title}} </h1>
+                </div>
+                <div id="mainpage">
+                        <table style="padding:20px">
+                                <tr><td><h3>RADIO</h3></td></tr>
+                                <tr>
+                                        <td>
+                                                <form method="post">
+                                                        <input type="hidden" name="command" value="RADIO:MODE">
+                                                        <input id="button" type="submit" value="MODE"/>
+                                                </form>
+                                        </td>
+                                        <td>
+                                                <form method="post">
+                                                        <input type="hidden" name="command" value="RADIO:PLAYPAUSE">
+                                                        <input id="button" type="submit" value="PLAYPAUSE"/>
+                                                </form>
+                                        </td>
+                                        <td>
+                                                <form method="post">
+                                                        <input type="hidden" name="command" value="RADIO:VOLUMEUP">
+                                                        <input id="button" type="submit" value="VOL-UP"/>
+                                                </form>
+                                        </td>
+                                        <td>
+                                                <form method="post">
+                                                        <input type="hidden" name="command" value="RADIO:VOLUMEDOWN">
+                                                        <input id="button" type="submit" value="VOL-DOWN"/>
+                                                </form>
+                                        </td>
+                                        <td>
+                                                <form method="post">
+                                                        <input type="hidden" name="command" value="RADIO:PREV">
+                                                        <input id="button" type="submit" value="PREV"/>
+                                                </form>
+                                        </td>
+                                        <td>
+                                                <form method="post">
+                                                        <input type="hidden" name="command" value="RADIO:NEXT">
+                                                        <input id="button" type="submit" value="NEXT"/>
+                                                </form>
+                                        </td>
+                                        <td>
+                                                <form method="post">
+                                                        <input type="hidden" name="command" value="RADIO:CHANNELUP">
+                                                        <input id="button" type="submit" value="CH-UP"/>
+                                                </form>
+                                        </td>
+                                        <td>
+                                                <form method="post">
+                                                        <input type="hidden" name="command" value="RADIO:CHANNELDOWN">
+                                                        <input id="button" type="submit" value="CH-DOWN"/>
+                                                </form>
+                                        </td>
+                                </tr>
+                                {{#each items}}
+                                <tr>
+                                        <td><h3>{{name}}</h3></td>
+                                </tr>
+                                <tr>
+                                        <td>
+                                                <div class="statusCircle">
+                                                        <p id="status:OFF:{{name}}">{{status}}</p>
+                                                        <p id="status:ON:{{name}}" class="blink"></p>
+                                                </div>
+                                        </td>
+                                        <td>
+                                                <form method="post">
+                                                        <input type="hidden" name="command" value="{{name}}:ON">
+                                                        <input id="button" type="submit" value="ON"/>
+                                                </form>
+                                        </td>
+                                        <td>
+                                                <form method="post">
+                                                        <input type="hidden" name="command" value="{{name}}:OFF">
+                                                        <input id="button" type="submit" value="OFF"/>
+                                                </form>
+                                        </td>
+                                </tr>
+                                {{/each}}
+                                <tr><td><h3>HUMI</h3></td></tr>
+                                <tr>
+                                        <td>
+                                                <form method="post">
+                                                        <input type="hidden" name="command" value="HUMI:PUSH">
+                                                        <input id="button" type="submit" value="PUSH"/>
+                                                </form>
+                                        </td>
+                                        <td>
+                                                <form method="post">
+                                                        <input type="hidden" name="command" value="HUMI:OFF">
+                                                        <input id="button" type="submit" value="OFF"/>
+                                                </form>
+                                        </td>
+                                </tr>
+				<tr><td><h3>PROJECTOR</h3></td></tr>
+				<tr>
+                                        <td>
+                                                <form method="post">
+                                                        <input type="hidden" name="command" value="PROJECTOR:ONOFF">
+                                                        <input id="button" type="submit" value="ONOFF"/>
+                                                </form>
+                                        </td>
+                                </tr>
+				<tr><td><h3>ALL Control </h3></td></tr>
+                                <tr>
+                                        <td>
+                                                <form method="post">
+                                                        <input type="hidden" name="command" value="ALL:ON">
+                                                        <input id="button" type="submit" value="ON">
+                                                </form>
+                                        </td>
+                                        <td>
+                                                <form method="post">
+                                                        <input type="hidden" name="command" value="ALL:OFF">
+                                                        <input id="button" type="submit" value="OFF">
+                                                </form>
+                                        </td>
+                                </tr>
+
+                        </table>
+			<div>
+				<img src="http://swhomegateway.dyndns.org:9999/?action=stream" />
+			</div>
+			<div>
+				<img src="http://172.16.100.62:9999/?action=stream" />
+			</div>
+                </div>
+        </div>
+	
+        <script type="text/javascript">
+                //display current status
+	       $(document).ready(function() {
+	                var socket = io.connect('http://ohmyhome.ezupup.cafe24.com:8888');
+	                socket.on('statusUpdate', function(data) {
+	                        var datastring = JSON.stringify(data);
+	                        for (var i in data) {
+	                                        var statusOff = document.getElementById("status:OFF:" + data[i].name);
+	                                        var statusOn = document.getElementById("status:ON:" + data[i].name);
+	                                if (data[i].status == "ON") {
+	                                        statusOff.innerHTML = "";
+	                                        statusOn.innerHTML = data[i].status;
+	                                }
+	                                else if (data[i].status == "OFF") {
+	                                        statusOff.innerHTML = data[i].status;
+	                                        statusOn.innerHTML = "";
+	                                }
+	                        }
+	                        socket.emit('front', { reply: 'recieved'});
+	                });
+	       });
+        </script>
+        </body>
+</html>
+
